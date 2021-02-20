@@ -16,4 +16,5 @@
 <script src="{{ asset('assets/vendor/input-tags/tagsinput-custom.js') }}"></script>
 <script src="{{ asset('assets/vendor/bs-select/bs-select.min.js') }}"></script>
 <script src="{{ asset('assets/js/main.js') }}"></script>
+
 @yield('scripts')
