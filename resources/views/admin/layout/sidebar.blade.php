@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route('admin.users') }}">
                         <i class="icon-user1"></i>
                         <span class="menu-text">Users</span>
                     </a>
