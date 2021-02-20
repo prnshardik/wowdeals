@@ -16,19 +16,18 @@
         }
 
         public function change_password(){
-            return view('admin.profile.change_password');
+            return view('admin.change_password');
         }
 
         public function reset_password(Request $request){
-            dd($request->all());
-            $id = auth()->user()->id;
+            $id = auth()->guard('admin')->user()->id;
 
             $this->validate(request(), [
                 'current_password' => ['required', 'string', 'max:255'],
                 'new_password' => ['required', 'string', 'max:255'],
             ]);
 
-            $user = \DB::table('users')->where(['id' => $id])->first();
+            $user = \DB::table('admins')->where(['id' => $id])->first();
             if(!Hash::check($request->current_password, $user->password)){
                 return back()->with('error', 'The current password is incorrect.');
             }
@@ -38,10 +37,10 @@
                 'updated_at' => date('Y-m-d H:i:s'),
             );
 
-            $update = DB::table('users')->where(['id' => $id])->limit(1)->update($crud);
+            $update = DB::table('admins')->where(['id' => $id])->limit(1)->update($crud);
 
             if($update){
-                Auth::logout();
+                Auth::guard('admin')->logout();
                 return redirect()->route('admin.login')->with('success', 'Password changed successfully.');
             }else{
                 return redirect()->back()->with('error', 'Failed to change password.')->withInput();
