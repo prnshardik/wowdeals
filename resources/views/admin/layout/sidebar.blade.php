@@ -84,7 +84,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="index.php">
+                    <a href="{{ route('admin.logout') }}">
                         <i class="icon-log-out1"></i>
                         <span class="menu-text">Logout</span>
                     </a>
