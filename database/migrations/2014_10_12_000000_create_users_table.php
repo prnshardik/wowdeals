@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('city_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken()->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->timestamps();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

@@ -6,78 +6,77 @@
     use Illuminate\Http\Request;
     use App\Models\Admin;
     use App\Models\User;
+    use App\Models\City;
     use App\Http\Requests\UserRequest;
     use DB, Auth, Hash;
 
     class UsersController extends Controller{
         public function index(Request $request){
             $users = DB::table('users')
-                        ->select('users.*','cities.name AS city_name')
-                        ->leftJoin('cities' ,'users.city_id' ,'cities.id')
+                        ->select('users.*', 'cities.name as city_name')
+                        ->leftJoin('cities', 'cities.id', 'users.city_id')
                         ->get();
-            $city = DB::table('cities')->where('status','active')->get();
-            return view('admin.view.users.list')->with(['city' => $city , 'users' => $users]);
+
+            $cities = City::where(['status' => 'active'])->get();
+
+            return view('admin.view.users.list')->with(['cities' => $cities, 'users' => $users]);
         }
 
         public function store(UserRequest $request){
             if($request->ajax()){ return true; }
-            // dd(auth()->guard('admin')->user()->id);
+
             $crud = [
                 'name' => ucfirst($request->name),
-                'mobile_no' => $request->mobile_no,
                 'email' => $request->email,
-                'birth_date' => $request->bdate,
+                'password'=> Hash::make('abcd1234'),
+                'mobile_no' => $request->mobile_no,
+                'birth_date' => $request->birth_date,
+                'city_id' => $request->city_id,
                 'status' => 'active',
-                'password'=>'abcd1234',
                 'created_at' => date('Y-m-d H:i:s'),
                 'created_by' => auth()->guard('admin')->user()->id,
                 'updated_at' => date('Y-m-d H:i:s'),
-                'updated_by' => auth()->guard('admin')->user()->id,
+                'updated_by' => auth()->guard('admin')->user()->id
             ];
 
-             DB::beginTransaction();
-            try {
-                $user = User::create($crud);
+            $user = User::create($crud);
 
-                DB::commit();
-                return redirect()->route('admin.users')->with('success', 'User inserted successfully.');
-                
-            }catch (\Throwable $th) {
-                DB::rollback();
+            if($user)
+                return redirect()->route('admin.users')->with('success', 'Record inserted successfully.');
+            else
                 return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
-            }
         }
 
         public function edit(Request $request){
-            $users = DB::table('users')
-                        ->select('users.*','cities.name AS city_name')
-                        ->leftJoin('cities' ,'users.city_id' ,'cities.id')
+            $user = DB::table('users')
+                        ->select('users.*', 'cities.name as city_name')
+                        ->leftJoin('cities', 'users.city_id', 'cities.id')
+                        ->where(['users.id' => $request->id])
                         ->first();
-            return response()->json(['code' => 200, 'users' => $users]);
+            if($user)
+                return response()->json(['code' => 200, 'user' => $user]);
+            else
+                return response()->json(['code' => 201]);
         }
 
-
         public function update(UserRequest $request){
-            if(!$request->ajax()){ return 'No Direct script allowed'; }
+            if($request->ajax()){ return false; }
+
             $crud = [
                 'name' => ucfirst($request->name),
-                'mobile_no' => $request->mobile_no,
                 'email' => $request->email,
-                'birth_date' => $request->bdate,
+                'mobile_no' => $request->mobile_no,
+                'birth_date' => $request->birth_date,
+                'city_id' => $request->city_id,
                 'updated_at' => date('Y-m-d H:i:s'),
-                'updated_by' => auth()->guard('admin')->user()->id,
+                'updated_by' => auth()->guard('admin')->user()->id
             ];
 
-             DB::beginTransaction();
-            try {
-                $user = User::create($crud);
+            $update = User::where(['id' => $request->id])->update($crud);
 
-                DB::commit();
-                return response()->json(['code' => 200]);
-                
-            }catch (\Throwable $th) {
-                DB::rollback();
-                return response()->json(['code' => 201]);
-            }
+            if($update)
+                return redirect()->route('admin.users')->with('success', 'Record updated successfully.');
+            else
+                return redirect()->back()->with('error', 'Failed to update record.')->withInput();
         }
     }

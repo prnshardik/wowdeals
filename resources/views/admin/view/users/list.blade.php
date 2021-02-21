@@ -11,13 +11,14 @@
 @endsection
 
 @section('content')
-<div class="alert alert-success" style="display:none">
-    {{ Session::get('success') }}
-</div>
+    <div class="alert alert-success" style="display:none">
+        {{ Session::get('success') }}
+    </div>
 
-<div class="alert alert-danger" style="display:none">
-    {{ Session::get('danger') }}
-</div>
+    <div class="alert alert-danger" style="display:none">
+        {{ Session::get('danger') }}
+    </div>
+
     <div class="page-header">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">Home</li>
@@ -25,17 +26,15 @@
         </ol>
 
         <ul class="app-actions">
-            
-            <div class="custom-search">
-                <input type="text" class="search-query" placeholder="Enter Name or Mobile">
-                <i class="icon-search1"></i>
-            </div>
-        </ul>
-
-        <ul class="app-actions">
             <li>
-                <a href="#" data-toggle="modal" data-target="#basicModal">
-                    <i class="icon-circle-with-plus" data-toggle="tooltip" data-placement="top" title="Register New Company"></i>
+                <div class="custom-search">
+                    <input type="text" class="search-query" placeholder="Enter Name or Mobile">
+                    <i class="icon-search1"></i>
+                </div>
+            </li>
+            <li>
+                <a href="#" data-toggle="modal" data-target="#insertModal">
+                    <i class="icon-circle-with-plus" data-toggle="tooltip" data-placement="top" title="New User"></i>
                 </a>
             </li>
         </ul>
@@ -57,112 +56,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Ranbir Kapoor</td>
-                                <td>9876543210</td>
-                                <td>rk@kapoor.in</td>
-                                <td>March 15, 2020</td>
-                                <td>Delhi</td>
-                                <td>
-                                    <div class="td-actions">
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
-                                            <i class="icon-sync_problem"></i>
-                                        </a>
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="Change Password">
-                                            <i class="icon-vpn_key"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Ranbir Kapoor</td>
-                                <td>9876543210</td>
-                                <td>rk@kapoor.in</td>
-                                <td>March 15, 2020</td>
-                                <td>Delhi</td>
-                                <td>
-                                    <div class="td-actions">
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
-                                            <i class="icon-sync_problem"></i>
-                                        </a>
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="Change Password">
-                                            <i class="icon-vpn_key"></i>
-                                        </a>
-                                    </div>
-                                </td>                            
-                            </tr>
-                            <tr>
-                                <td>Ranbir Kapoor</td>
-                                <td>9876543210</td>
-                                <td>rk@kapoor.in</td>
-                                <td>March 15, 2020</td>
-                                <td>Delhi</td>
-                                <td>
-                                    <div class="td-actions">
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
-                                            <i class="icon-sync_problem"></i>
-                                        </a>
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="Change Password">
-                                            <i class="icon-vpn_key"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Ranbir Kapoor</td>
-                                <td>9876543210</td>
-                                <td>rk@kapoor.in</td>
-                                <td>March 15, 2020</td>
-                                <td>Delhi</td>
-                                <td>
-                                    <div class="td-actions">
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
-                                            <i class="icon-sync_problem"></i>
-                                        </a>
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="Change Password">
-                                            <i class="icon-vpn_key"></i>
-                                        </a>
-                                    </div>                                
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Ranbir Kapoor</td>
-                                <td>9876543210</td>
-                                <td>rk@kapoor.in</td>
-                                <td>March 15, 2020</td>
-                                <td>Delhi</td>
-                                <td>
-                                    <div class="td-actions">
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
-                                            <i class="icon-sync_problem"></i>
-                                        </a>
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="Change Password">
-                                            <i class="icon-vpn_key"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
+                            @if(isset($users) && $users->isNotEmpty())
                                 @foreach($users AS $row)
-                                    <td>{{ $row->name }}</td>
-                                    <td>{{ $row->mobile_no }}</td>
-                                    <td>{{ $row->email }}</td>
-                                    <td>{{ $row->birth_date }}</td>
-                                    <td>{{ $row->city_name }}</td>
-                                    <td><div class="td-actions">
-                                        <a href="#" data-id="{{ $row->id }}" class="icon red edit" data-toggle="tooltip" data-placement="top" title="Edit">
-                                            <i class="icon-edit"></i>
-                                        </a>
-
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
-                                            <i class="icon-sync_problem"></i>
-                                        </a>
-                                        <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="Change Password">
-                                            <i class="icon-vpn_key"></i>
-                                        </a>
-                                    </div></td>
+                                    <tr>
+                                        <td>{{ $row->name ?? '' }}</td>
+                                        <td>{{ $row->mobile_no ?? '' }}</td>
+                                        <td>{{ $row->email ?? '' }}</td>
+                                        <td>{{ $row->birth_date ?? '' }}</td>
+                                        <td>{{ $row->city_name ?? '' }}</td>
+                                        <td>
+                                            <div class="td-actions">
+                                                <a href="#" data-id="{{ $row->id ?? '' }}" class="icon red edit" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                    <i class="icon-edit"></i>
+                                                </a>
+                                                <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
+                                                    <i class="icon-sync_problem"></i>
+                                                </a>
+                                                <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="Change Password">
+                                                    <i class="icon-vpn_key"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                     </tr>
                                 @endforeach
-                            </tr>
+                            @else
+                                <tr>
+                                    <td colspan="7"><h5 class="text-center">No Data Found...!!!</h5></td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -170,192 +91,182 @@
         </div>
     </div>
 
-    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModalLabel" aria-hidden="true">
+    <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="basicModalLabel">Create User</h5>
+                    <h5 class="modal-title" id="insertModalLabel">Create User</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form" action="{{ route('admin.users.store') }}" method="post">
+                    <form id="insert_form" action="{{ route('admin.users.store') }}" method="post">
                         @csrf
-                    
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter Name</code></p>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Please Enter Name" required="true">
-                            <span class="kt-form__help error name"></span>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>Name *</code></p>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Please enter name">
+                                <span class="kt-form__help error name"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>Mobile Number *</code></p>
+                                <input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Please enter mobile number">
+                                <span class="kt-form__help error mobile_no"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>Email *</code></p>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Please Enter Email">
+                                <span class="kt-form__help error email"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>Birthdate *</code></p>
+                                <input type="date" name="birth_date" id="birth_date" class="form-control" formet="d-m-Y" placeholder="Please enter birthdate" data-date-format="DD MMMM YYYY">
+                                <span class="kt-form__help error birth_date"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>City *</code></p>
+                                <select name="city_id" id="city_id" class="form-control">
+                                    <option value="" hidden>Select City</option>
+                                    @foreach($cities as $row)
+                                        <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="kt-form__help error city_id"></span>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter Mobile Number</code></p>
-                            <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="Please Enter Mobile Number" required="true">
-                            <span class="kt-form__help error mobile_no"></span>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter Email</code></p>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Please Enter Email" required="true">
-                            <span class="kt-form__help error email"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter Birthdate</code></p>
-                            <input type="date" formet="d-m-Y" class="form-control" id="bdate" name="bdate" placeholder="Please Enter Birthdate" data-date-format="DD MMMM YYYY">
-                            <span class="kt-form__help error bdate"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter City</code></p>
-                            <select name="city" class="form-control" id="city" required="true">
-                                <option value="" hidden>Select City</option>
-                                @foreach($city AS $row)
-                                    <option value="{{$row->id}}">{{$row->name}}</option>
-                                @endforeach
-                            </select>
-                            <span class="kt-form__help error city"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-
-            </form>
+                </form>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="basicModal1" tabindex="-1" role="dialog" aria-labelledby="basicModalLabel" aria-hidden="true">
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="basicModalLabel">Update User</h5>
+                    <h5 class="modal-title" id="updateModalLabel">Update User</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form1" action="{{ route('admin.users.update') }}" method="post">
+                    <form id="update_form" action="{{ route('admin.users.update') }}" method="post">
                         @csrf
                         @method('PATCH')
-                    <input type="hidden" name="id" id="hidden_id">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter Name</code></p>
-                            <input type="text" class="form-control" id="name1" name="name" placeholder="Please Enter Name" required="true">
-                            <span class="kt-form__help error name"></span>
+                        <input type="hidden" name="id" id="id">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>Enter Name</code></p>
+                                <input type="text" name="name" id="edit_name" class="form-control" placeholder="Please enter name">
+                                <span class="kt-form__help error name"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>Mobile Number *</code></p>
+                                <input type="text" name="mobile_no" id="edit_mobile_no" class="form-control" placeholder="Please enter mobile number">
+                                <span class="kt-form__help error mobile_no"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>Email *</code></p>
+                                <input type="email" name="email" id="edit_email" class="form-control" placeholder="Please enter email">
+                                <span class="kt-form__help error email"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>Birthdate *</code></p>
+                                <input type="date" name="birth_date" id="edit_birth_date" class="form-control" formet="d-m-Y" placeholder="Please enter birthdate" data-date-format="DD MMMM YYYY">
+                                <span class="kt-form__help error birth_date"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <p><code>City *</code></p>
+                                <select name="city_id" id="edit_city_id" class="form-control">
+                                    <option value="" hidden>Select City</option>
+                                    @foreach($cities AS $row)
+                                        <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="kt-form__help error city_id"></span>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter Mobile Number</code></p>
-                            <input type="text" class="form-control" id="mobile_no1" name="mobile_no" placeholder="Please Enter Mobile Number" required="true">
-                            <span class="kt-form__help error mobile_no"></span>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter Email</code></p>
-                            <input type="email" class="form-control" id="email1" name="email" placeholder="Please Enter Email" required="true">
-                            <span class="kt-form__help error email"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter Birthdate</code></p>
-                            <input type="date" formet="d-m-Y" class="form-control" id="bdate1" name="bdate" placeholder="Please Enter Birthdate" data-date-format="DD MMMM YYYY">
-                            <span class="kt-form__help error bdate"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="form-group">
-                            <p><code>Enter City</code></p>
-                            <select name="city" class="form-control" id="city1" required="true">
-                                <option value="" hidden>Select City</option>
-                                @foreach($city AS $row)
-                                    <option value="{{$row->id}}">{{$row->name}}</option>
-                                @endforeach
-                            </select>
-                            <span class="kt-form__help error city"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" id="update" class="btn btn-primary">Save</button>
-                </div>
-
-            </form>
+                </form>
             </div>
         </div>
     </div>
 @endsection
 
 @section('scripts')
-<script>
-    $(document).ready(function(){
-        $("#mobile_no").keypress(function(e){
-            var keyCode = e.keyCode || e.which;
-            var $this = $(this);
-            //Regex for Valid Characters i.e. Numbers.
-            var regex = new RegExp("^[0-9\b]+$");
+    <script>
+        $(document).ready(function(){
+            $("#mobile_no").keypress(function(e){
+                var keyCode = e.keyCode || e.which;
+                var $this = $(this);
 
-            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
-            // for 10 digit number only
-            if ($this.val().length > 9) {
-                e.preventDefault();
-                return false;
-            }
-            if (e.charCode < 54 && e.charCode > 47) {
-                if ($this.val().length == 0) {
+                var regex = new RegExp("^[0-9\b]+$");
+
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                // for 10 digit number only
+                if ($this.val().length > 9) {
                     e.preventDefault();
                     return false;
-                } else {
+                }
+                if (e.charCode < 54 && e.charCode > 47) {
+                    if ($this.val().length == 0) {
+                        e.preventDefault();
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                if (regex.test(str)) {
                     return true;
                 }
-            }
-            if (regex.test(str)) {
-                return true;
-            }
-            e.preventDefault();
-            return false;
-        });
+                e.preventDefault();
+                return false;
+            });
 
-        var form = $('#form');
+            var insert_form = $('#insert_form');
             $('.kt-form__help').html('');
-            form.submit(function(e) {
+            insert_form.submit(function(e) {
                 $('.help-block').html('');
                 $('.m-form__help').html('');
                 $.ajax({
-                    url : form.attr('action'),
-                    type : form.attr('method'),
-                    data : form.serialize(),
+                    url : insert_form.attr('action'),
+                    type : insert_form.attr('method'),
+                    data : insert_form.serialize(),
                     dataType: 'json',
-                    async:false,
-                    success : function(json){
+                    async: false,
+                    success : function(response){
                         return true;
                     },
-                    error: function(json){
-                        if(json.status === 422) {
+                    error: function(error){
+                        if(error.status === 422) {
                             e.preventDefault();
-                            var errors_ = json.responseJSON;
+                            var errors_ = error.responseJSON;
                             $('.kt-form__help').html('');
                             $.each(errors_.errors, function (key, value) {
                                 $('.'+key).html(value);
@@ -365,73 +276,70 @@
                 });
             });
 
+            $('.edit').on('click' , function(){
+                var id = $(this).data('id');
 
-        $('.edit').on('click' , function(){
-            var id = $(this).data('id');
-            if(id != '' || id != null){
-                $.ajax({
-                    url : "{{ route('admin.users.edit') }}",
-                    type :'POST',
-                    data : {id:id , _token:"{{ csrf_token() }}"},
-                    success : function(json){
-                        if(json.code == 200){
-                           $('#name1').val('');
-                           $('#mobile_no1').val('');
-                           $('#email1').val('');
-                           $('#bdate1').val('');
-                           $('#city1').val('');
-                           $('#hidden_id').val('');
+                if(id != '' || id != null){
+                    $.ajax({
+                        url : "{{ route('admin.users.edit') }}",
+                        type :'POST',
+                        data : {
+                            id: id,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success : function(response){
+                            if(response.code == 200){
+                                $('#id').val('');
+                                $('#edit_name').val('');
+                                $('#edit_mobile_no').val('');
+                                $('#edit_email').val('');
+                                $('#edit_birth_date').val('');
+                                $('#edit_city_id').val('');
 
-                           $('#basicModal1').modal('show');
+                                $('#updateModal').modal('show');
 
-                           $('#hidden_id').val(json.users.id);
-                           $('#name1').val(json.users.name);
-                           $('#mobile_no1').val(json.users.mobile_no);
-                           $('#email1').val(json.users.email);
-                           $('#city1').val(json.users.city_id);
-                           $('#bdate1').val(json.users.birth_date);
+                                $('#id').val(response.user.id);
+                                $('#edit_name').val(response.user.name);
+                                $('#edit_mobile_no').val(response.user.mobile_no);
+                                $('#edit_email').val(response.user.email);
+                                $('#edit_birth_date').val(response.user.birth_date);
+                                $('#edit_city_id').val(response.user.city_id);
+                            }else{
+                                toastr.error('something went wrong', { timeOut: 250 });
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }else{
+                    toastr.error('something went wrong', { timeOut: 250 });
+                }
+            });
 
-    $('#update').on('click', function() {
-
-            var form = $('#form1');
+            var update_form = $('#update_form');
             $('.kt-form__help').html('');
-            form.submit(function(e){
+            update_form.submit(function(e) {
                 $('.help-block').html('');
                 $('.m-form__help').html('');
                 $.ajax({
-                    url : form.attr('action'),
-                    type : form.attr('method'),
-                    data : form.serialize(),
+                    url : update_form.attr('action'),
+                    type : update_form.attr('method'),
+                    data : update_form.serialize(),
                     dataType: 'json',
-                    async:false,
-                    success : function(json){
+                    async: false,
+                    success : function(response){
                         return true;
                     },
-                    error: function(json){
-                        if(json.status === 422) {
+                    error: function(error){
+                        if(error.status === 422) {
                             e.preventDefault();
-                            var errors_ = json.responseJSON;
+                            var errors_ = error.responseJSON;
                             $('.kt-form__help').html('');
                             $.each(errors_.errors, function (key, value) {
                                 $('.'+key).html(value);
                             });
-                        } else if(josn.code == 201) {
-                            toastr('error', 'Something went wrong');
-                        } else if(josn.code == 200) {
-                            toastr('success', 'Record updated successfully');
-                            $('#basicModal1').modal('hide');
-
                         }
                     }
                 });
             });
-    });
-
-    });
-</script>
+        });
+    </script>
 @endsection

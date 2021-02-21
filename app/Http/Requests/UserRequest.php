@@ -15,17 +15,16 @@
                     'name' => 'required',
                     'mobile_no' => 'required|unique:users,mobile_no,'.$this->id,
                     'email' => 'required|unique:users,email,'.$this->id,
-                    'bdate' => 'required',
-                    'city' => 'required',
-                    
+                    'birth_date' => 'required',
+                    'city_id' => 'required',
                 ];
             }else{
                 return [
                     'name' => 'required',
                     'mobile_no' => 'required|unique:users',
                     'email' => 'required|unique:users',
-                    'bdate' => 'required',
-                    'city' => 'required',
+                    'birth_date' => 'required',
+                    'city_id' => 'required',
                 ];
             }
         }
@@ -33,12 +32,12 @@
         public function messages(){
             return [
                 'name.required' => 'Please enter name',
-                'mobile_no.required' => 'Please enter mobile_no',
+                'mobile_no.required' => 'Please enter mobile no',
                 'mobile_no.unique' => 'This mobile number is already taken',
                 'email.required' => 'Please enter email id',
                 'email.unique' => 'This email is already taken',
-                'bdate.required' => 'Please enter Birth Date',
-                'city.required' => 'Please Select City',
+                'birth_date.required' => 'Please enter birth date',
+                'city_id.required' => 'Please select city',
             ];
         }
     }
