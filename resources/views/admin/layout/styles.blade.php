@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/css/classic.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/css/classic.date.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/input-tags/tagsinput.css') }}" />
+<link href="{{ asset('assets/css/toastr.css') }}" rel="stylesheet" />
 <style type="text/css" media="screen">
 	.error{
 		color:red;

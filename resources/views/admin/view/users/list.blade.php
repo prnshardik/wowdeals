@@ -150,6 +150,10 @@
                                     <td>{{ $row->birth_date }}</td>
                                     <td>{{ $row->city_name }}</td>
                                     <td><div class="td-actions">
+                                        <a href="#" data-id="{{ $row->id }}" class="icon red edit" data-toggle="tooltip" data-placement="top" title="Edit">
+                                            <i class="icon-edit"></i>
+                                        </a>
+
                                         <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
                                             <i class="icon-sync_problem"></i>
                                         </a>
@@ -233,6 +237,75 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="basicModal1" tabindex="-1" role="dialog" aria-labelledby="basicModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="basicModalLabel">Update User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form1" action="{{ route('admin.users.update') }}" method="post">
+                        @csrf
+                        @method('PATCH')
+                    <input type="hidden" name="id" id="hidden_id">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group">
+                            <p><code>Enter Name</code></p>
+                            <input type="text" class="form-control" id="name1" name="name" placeholder="Please Enter Name" required="true">
+                            <span class="kt-form__help error name"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group">
+                            <p><code>Enter Mobile Number</code></p>
+                            <input type="text" class="form-control" id="mobile_no1" name="mobile_no" placeholder="Please Enter Mobile Number" required="true">
+                            <span class="kt-form__help error mobile_no"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group">
+                            <p><code>Enter Email</code></p>
+                            <input type="email" class="form-control" id="email1" name="email" placeholder="Please Enter Email" required="true">
+                            <span class="kt-form__help error email"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group">
+                            <p><code>Enter Birthdate</code></p>
+                            <input type="date" formet="d-m-Y" class="form-control" id="bdate1" name="bdate" placeholder="Please Enter Birthdate" data-date-format="DD MMMM YYYY">
+                            <span class="kt-form__help error bdate"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group">
+                            <p><code>Enter City</code></p>
+                            <select name="city" class="form-control" id="city1" required="true">
+                                <option value="" hidden>Select City</option>
+                                @foreach($city AS $row)
+                                    <option value="{{$row->id}}">{{$row->name}}</option>
+                                @endforeach
+                            </select>
+                            <span class="kt-form__help error city"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="update" class="btn btn-primary">Save</button>
+                </div>
+
+            </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -292,6 +365,72 @@
                 });
             });
 
+
+        $('.edit').on('click' , function(){
+            var id = $(this).data('id');
+            if(id != '' || id != null){
+                $.ajax({
+                    url : "{{ route('admin.users.edit') }}",
+                    type :'POST',
+                    data : {id:id , _token:"{{ csrf_token() }}"},
+                    success : function(json){
+                        if(json.code == 200){
+                           $('#name1').val('');
+                           $('#mobile_no1').val('');
+                           $('#email1').val('');
+                           $('#bdate1').val('');
+                           $('#city1').val('');
+                           $('#hidden_id').val('');
+
+                           $('#basicModal1').modal('show');
+
+                           $('#hidden_id').val(json.users.id);
+                           $('#name1').val(json.users.name);
+                           $('#mobile_no1').val(json.users.mobile_no);
+                           $('#email1').val(json.users.email);
+                           $('#city1').val(json.users.city_id);
+                           $('#bdate1').val(json.users.birth_date);
+                        }
+                    }
+                });
+            }
+        });
+
+    $('#update').on('click', function() {
+
+            var form = $('#form1');
+            $('.kt-form__help').html('');
+            form.submit(function(e){
+                $('.help-block').html('');
+                $('.m-form__help').html('');
+                $.ajax({
+                    url : form.attr('action'),
+                    type : form.attr('method'),
+                    data : form.serialize(),
+                    dataType: 'json',
+                    async:false,
+                    success : function(json){
+                        return true;
+                    },
+                    error: function(json){
+                        if(json.status === 422) {
+                            e.preventDefault();
+                            var errors_ = json.responseJSON;
+                            $('.kt-form__help').html('');
+                            $.each(errors_.errors, function (key, value) {
+                                $('.'+key).html(value);
+                            });
+                        } else if(josn.code == 201) {
+                            toastr('error', 'Something went wrong');
+                        } else if(josn.code == 200) {
+                            toastr('success', 'Record updated successfully');
+                            $('#basicModal1').modal('hide');
+
+                        }
+                    }
+                });
+            });
+    });
 
     });
 </script>

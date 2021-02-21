@@ -35,16 +35,49 @@
                 'updated_by' => auth()->guard('admin')->user()->id,
             ];
 
-            //  DB::beginTransaction();
-            // try {
+             DB::beginTransaction();
+            try {
                 $user = User::create($crud);
 
-                // DB::commit();
+                DB::commit();
                 return redirect()->route('admin.users')->with('success', 'User inserted successfully.');
                 
-            // }catch (\Throwable $th) {
-            //     DB::rollback();
-            //     return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
-            // }
+            }catch (\Throwable $th) {
+                DB::rollback();
+                return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
+            }
+        }
+
+        public function edit(Request $request){
+            $users = DB::table('users')
+                        ->select('users.*','cities.name AS city_name')
+                        ->leftJoin('cities' ,'users.city_id' ,'cities.id')
+                        ->first();
+            return response()->json(['code' => 200, 'users' => $users]);
+        }
+
+
+        public function update(UserRequest $request){
+            if(!$request->ajax()){ return 'No Direct script allowed'; }
+            $crud = [
+                'name' => ucfirst($request->name),
+                'mobile_no' => $request->mobile_no,
+                'email' => $request->email,
+                'birth_date' => $request->bdate,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' => auth()->guard('admin')->user()->id,
+            ];
+
+             DB::beginTransaction();
+            try {
+                $user = User::create($crud);
+
+                DB::commit();
+                return response()->json(['code' => 200]);
+                
+            }catch (\Throwable $th) {
+                DB::rollback();
+                return response()->json(['code' => 201]);
+            }
         }
     }
