@@ -66,13 +66,13 @@
                                         <td>{{ $row->city_name ?? '' }}</td>
                                         <td>
                                             <div class="td-actions">
-                                                <a href="#" data-id="{{ $row->id ?? '' }}" class="icon red edit" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                <a href="#" data-id="{{ base64_encode($row->id) ?? '' }}" class="icon red edit" data-toggle="tooltip" data-placement="top" title="Edit">
                                                     <i class="icon-edit"></i>
                                                 </a>
                                                 <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
                                                     <i class="icon-sync_problem"></i>
                                                 </a>
-                                                <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="Change Password">
+                                                <a href="#" class="icon red delete" data-toggle="tooltip" data-placement="top" title="Change Password">
                                                     <i class="icon-vpn_key"></i>
                                                 </a>
                                             </div>

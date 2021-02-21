@@ -42,16 +42,17 @@
             $user = User::create($crud);
 
             if($user)
-                return redirect()->route('admin.users')->with('success', 'Record inserted successfully.');
+                return redirect()->route('admin.users')->with('success', 'Record inserted successfully');
             else
-                return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
+                return redirect()->back()->with('error', 'Failed to insert record')->withInput();
         }
 
         public function edit(Request $request){
+            $id = base64_decode($request->id);
             $user = DB::table('users')
                         ->select('users.*', 'cities.name as city_name')
                         ->leftJoin('cities', 'users.city_id', 'cities.id')
-                        ->where(['users.id' => $request->id])
+                        ->where(['users.id' => $id])
                         ->first();
             if($user)
                 return response()->json(['code' => 200, 'user' => $user]);
@@ -75,8 +76,8 @@
             $update = User::where(['id' => $request->id])->update($crud);
 
             if($update)
-                return redirect()->route('admin.users')->with('success', 'Record updated successfully.');
+                return redirect()->route('admin.users')->with('success', 'Record updated successfully');
             else
-                return redirect()->back()->with('error', 'Failed to update record.')->withInput();
+                return redirect()->back()->with('error', 'Failed to update record')->withInput();
         }
     }
