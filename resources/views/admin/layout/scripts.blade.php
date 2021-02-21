@@ -14,7 +14,30 @@
 <script src="{{ asset('assets/vendor/input-tags/tagsinput.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/input-tags/typeahead.js') }}"></script>
 <script src="{{ asset('assets/vendor/input-tags/tagsinput-custom.js') }}"></script>
+<script src="{{ asset('assets/js/toster.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/vendor/bs-select/bs-select.min.js') }}"></script>
 <script src="{{ asset('assets/js/main.js') }}"></script>
+<script>	
+    @php
+        $success = '';
+        if(\Session::has('success'))
+            $success = \Session::get('success');
 
+        $error = '';
+        if(\Session::has('error'))
+            $error = \Session::get('error');
+    @endphp
+
+    var success = "{{ $success }}";
+    var error = "{{ $error }}";
+
+    if(success != ''){
+        toastr.success(success, 'Success');
+    }
+
+    if(error != ''){
+        toastr.error(error, 'error');
+    }
+
+</script>
 @yield('scripts')
