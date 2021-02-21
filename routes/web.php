@@ -29,6 +29,7 @@ Route::group(['middleware' => ['prevent-back-history']], function(){
 
             /** users */
             Route::any('users', 'UsersController@index')->name('users');
+            Route::post('users/store', 'UsersController@store')->name('users.store');
         });
     });
 

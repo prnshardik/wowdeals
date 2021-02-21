@@ -7,5 +7,10 @@
 <link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/css/classic.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/css/classic.date.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/input-tags/tagsinput.css') }}" />
-
+<style type="text/css" media="screen">
+	.error{
+		color:red;
+		font-weight: bold;
+	}
+</style>
 @yield('styles')
