@@ -1,3 +1,3 @@
-@if(isset($users) && $users->isNotEmpty())
-    <div id="pagination">{!! $users->links() !!}</div>
+@if(isset($data) && $data->isNotEmpty())
+    <div id="pagination">{!! $data->links() !!}</div>
 @endif

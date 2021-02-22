@@ -25,11 +25,11 @@
                                 ->orWhere('cities.name', 'like', "%$request->search%");
                 }
 
-                $users = $collection->leftJoin('cities', 'cities.id', 'users.city_id')
+                $data = $collection->leftJoin('cities', 'cities.id', 'users.city_id')
                                     ->paginate(5);
 
-                $view = View::make('admin.view.users.list_ajax', ['users' => $users])->render();
-                $pagination = View::make('admin.view.users.list_ajax_pagination', ['users' => $users])->render();
+                $view = View::make('admin.view.users.list_ajax', ['data' => $data])->render();
+                $pagination = View::make('admin.view.users.list_ajax_pagination', ['data' => $data])->render();
 
                 return response()->json(['view' => $view, 'pagination' => $pagination]);
             }
@@ -113,6 +113,5 @@
                 return response()->json(['code' => 200]);
             else
                 return response()->json(['code' => 201]);
-
         }
     }

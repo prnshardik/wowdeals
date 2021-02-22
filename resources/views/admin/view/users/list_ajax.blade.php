@@ -1,5 +1,5 @@
-@if(isset($users) && $users->isNotEmpty())
-    @foreach($users AS $row)
+@if(isset($data) && $data->isNotEmpty())
+    @foreach($data AS $row)
         <tr>
             <td>{{ $row->name ?? '' }}</td>
             <td>{{ $row->mobile_no ?? '' }}</td>
