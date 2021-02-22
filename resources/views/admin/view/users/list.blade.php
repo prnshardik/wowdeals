@@ -200,7 +200,7 @@
 @section('scripts')
     <script>
         var search = '';
-        var page = '';
+        var page = '1';
 
         $(document).ready(function(){
             function records(page){
@@ -274,10 +274,10 @@
                         if(response.code == 200){
                             $("#insert_form").trigger('reset');
                             toastr.success('Record inserted successfully', { timeOut: 250 });
-                            records();
+                            records(page);
                         }else{
                             toastr.error('something went wrong', { timeOut: 250 });
-                            records();
+                            records(page);
                         }
                     },
                     error: function(error){
@@ -346,10 +346,10 @@
                         $('#updateModal').modal('hide');
                         if(response.code == 200){
                             toastr.success('Record updated successfully', { timeOut: 250 });
-                            records();
+                            records(page);
                         }else{
                             toastr.error('something went wrong', { timeOut: 250 });
-                            records();
+                            records(page);
                         }
                     },
                     error: function(error){
@@ -362,6 +362,38 @@
                         }
                     }
                 });
+            });
+
+            $('#datatable').on('click', '.change-status', function(){
+                var id = $(this).data('id');
+                var status = $(this).data('status');
+
+                if(id != '' || id != null && status != '' || status != null){
+                    var check = confirm("Are you sure you want to "+ status +" user ?");
+                    if (check != true) {
+                        return false;
+                    }
+
+                    $.ajax({
+                        url : "{{ route('admin.users.change.status') }}",
+                        type :'POST',
+                        data : {
+                            id: id,
+                            status: status,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success : function(response){
+                            if(response.code == 200){
+                                toastr.success('Status chagned successully', { timeOut: 250 });
+                                records(page);
+                            }else{
+                                toastr.error('something went wrong', { timeOut: 250 });
+                            }
+                        }
+                    });
+                }else{
+                    toastr.error('something went wrong', { timeOut: 250 });
+                }                
             });
         });
     </script>

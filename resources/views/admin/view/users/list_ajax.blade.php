@@ -11,9 +11,15 @@
                     <a href="#" data-id="{{ base64_encode($row->id) ?? '' }}" class="icon red edit" data-toggle="tooltip" data-placement="top" title="Edit">
                         <i class="icon-edit"></i>
                     </a>
-                    <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
-                        <i class="icon-sync_problem"></i>
-                    </a>
+                    @if($row->status == 'active')
+                        <a href="#" data-id="{{ base64_encode($row->id) ?? '' }}" data-status="inactive" class="icon red change-status" data-toggle="tooltip" data-placement="top" title="De-Activate">
+                            <i class="icon-sync_problem"></i>
+                        </a>
+                    @else
+                        <a href="#" data-id="{{ base64_encode($row->id) ?? '' }}" data-status="active" class="icon red change-status" data-toggle="tooltip" data-placement="top" title="Activate">
+                            <i class="icon-sync_problem"></i>
+                        </a>
+                    @endif
                     <a href="#" class="icon red delete" data-toggle="tooltip" data-placement="top" title="Change Password">
                         <i class="icon-vpn_key"></i>
                     </a>

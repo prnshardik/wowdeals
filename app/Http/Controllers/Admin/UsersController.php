@@ -88,4 +88,22 @@
             else
                 return response()->json(['code' => 201]);
         }
+
+        public function change_status(Request $request){
+            $id = base64_decode($request->id);
+
+            $crud = [
+                'status' => $request->status,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' => auth()->guard('admin')->user()->id
+            ];
+
+            $update = User::where(['id' => $id])->update($crud);
+
+            if($update)
+                return response()->json(['code' => 200]);
+            else
+                return response()->json(['code' => 201]);
+
+        }
     }
