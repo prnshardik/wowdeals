@@ -1,7 +1,7 @@
 @extends('admin.layout.app')
 
 @section('title')
-    Users
+    Cities
 @endsection
 
 @section('meta')
@@ -22,19 +22,19 @@
     <div class="page-header">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">Home</li>
-            <li class="breadcrumb-item active">Users</li>
+            <li class="breadcrumb-item active">Cities</li>
         </ol>
 
         <ul class="app-actions">
             <li>
                 <div class="custom-search">
-                    <input type="text" name="search" id="search" class="search-query" placeholder="Enter Name or Mobile">
+                    <input type="text" name="search" id="search" class="search-query" placeholder="Enter Name">
                     <i class="icon-search1" id="searchButton"></i>
                 </div>
             </li>
             <li>
                 <a href="#" data-toggle="modal" data-target="#insertModal">
-                    <i class="icon-circle-with-plus" data-toggle="tooltip" data-placement="top" title="New User"></i>
+                    <i class="icon-circle-with-plus" data-toggle="tooltip" data-placement="top" title="New City"></i>
                 </a>
             </li>
         </ul>
@@ -48,10 +48,7 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Mobile No.</th>
-                                <th>Email Address</th>
-                                <th>Birthdate</th>
-                                <th>City</th>
+                                <th>State</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -73,13 +70,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="insertModalLabel">Create User</h5>
+                    <h5 class="modal-title" id="insertModalLabel">Create City</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="insert_form" action="{{ route('admin.users.store') }}" method="post">
+                    <form id="insert_form" action="{{ route('admin.cities.store') }}" method="post">
                         @csrf
 
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -91,35 +88,14 @@
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
-                                <p><code>Mobile Number *</code></p>
-                                <input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Please enter mobile number">
-                                <span class="kt-form__help error mobile_no"></span>
-                            </div>
-                        </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
-                                <p><code>Email *</code></p>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Please Enter Email">
-                                <span class="kt-form__help error email"></span>
-                            </div>
-                        </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
-                                <p><code>Birthdate *</code></p>
-                                <input type="date" name="birth_date" id="birth_date" class="form-control" formet="d-m-Y" placeholder="Please enter birthdate" data-date-format="DD MMMM YYYY">
-                                <span class="kt-form__help error birth_date"></span>
-                            </div>
-                        </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
-                                <p><code>City *</code></p>
-                                <select name="city_id" id="city_id" class="form-control">
-                                    <option value="" hidden>Select City</option>
-                                    @foreach($cities as $row)
+                                <p><code>State *</code></p>
+                                <select name="state_id" id="state_id" class="form-control">
+                                    <option value="" hidden>Select State</option>
+                                    @foreach($states as $row)
                                         <option value="{{ $row->id }}">{{ $row->name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="kt-form__help error city_id"></span>
+                                <span class="kt-form__help error state_id"></span>
                             </div>
                         </div>
                     </div>
@@ -136,13 +112,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateModalLabel">Update User</h5>
+                    <h5 class="modal-title" id="updateModalLabel">Update City</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="update_form" action="{{ route('admin.users.update') }}" method="post">
+                    <form id="update_form" action="{{ route('admin.cities.update') }}" method="post">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="id" id="id">
@@ -155,35 +131,14 @@
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
-                                <p><code>Mobile Number *</code></p>
-                                <input type="text" name="mobile_no" id="edit_mobile_no" class="form-control" placeholder="Please enter mobile number">
-                                <span class="kt-form__help error mobile_no"></span>
-                            </div>
-                        </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
-                                <p><code>Email *</code></p>
-                                <input type="email" name="email" id="edit_email" class="form-control" placeholder="Please enter email">
-                                <span class="kt-form__help error email"></span>
-                            </div>
-                        </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
-                                <p><code>Birthdate *</code></p>
-                                <input type="date" name="birth_date" id="edit_birth_date" class="form-control" formet="d-m-Y" placeholder="Please enter birthdate" data-date-format="DD MMMM YYYY">
-                                <span class="kt-form__help error birth_date"></span>
-                            </div>
-                        </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
-                                <p><code>City *</code></p>
-                                <select name="city_id" id="edit_city_id" class="form-control">
-                                    <option value="" hidden>Select City</option>
-                                    @foreach($cities AS $row)
+                                <p><code>State *</code></p>
+                                <select name="state_id" id="edit_state_id" class="form-control">
+                                    <option value="" hidden>Select State</option>
+                                    @foreach($states AS $row)
                                         <option value="{{ $row->id }}">{{ $row->name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="kt-form__help error city_id"></span>
+                                <span class="kt-form__help error state_id"></span>
                             </div>
                         </div>
                     </div>
@@ -206,7 +161,7 @@
             function records(page){
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('admin.users') }}"+"?page="+page,
+                    url: "{{ route('admin.cities') }}"+"?page="+page,
                     data: {
                         _token: "{{ csrf_token() }}",
                         search: search
@@ -228,33 +183,6 @@
                 e.preventDefault();
                 page = $(this).attr('href').split('page=')[1];
                 records(page);
-            });
-
-            $("#mobile_no").keypress(function(e){
-                var keyCode = e.keyCode || e.which;
-                var $this = $(this);
-
-                var regex = new RegExp("^[0-9\b]+$");
-
-                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
-                // for 10 digit number only
-                if ($this.val().length > 9) {
-                    e.preventDefault();
-                    return false;
-                }
-                if (e.charCode < 54 && e.charCode > 47) {
-                    if ($this.val().length == 0) {
-                        e.preventDefault();
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-                if (regex.test(str)) {
-                    return true;
-                }
-                e.preventDefault();
-                return false;
             });
 
             var insert_form = $('#insert_form');
@@ -297,7 +225,7 @@
 
                 if(id != '' || id != null){
                     $.ajax({
-                        url : "{{ route('admin.users.edit') }}",
+                        url : "{{ route('admin.cities.edit') }}",
                         type :'POST',
                         data : {
                             id: id,
@@ -307,19 +235,13 @@
                             if(response.code == 200){
                                 $('#id').val('');
                                 $('#edit_name').val('');
-                                $('#edit_mobile_no').val('');
-                                $('#edit_email').val('');
-                                $('#edit_birth_date').val('');
-                                $('#edit_city_id').val('');
+                                $('#edit_state_id').val('');
 
                                 $('#updateModal').modal('show');
 
                                 $('#id').val(response.data.id);
                                 $('#edit_name').val(response.data.name);
-                                $('#edit_mobile_no').val(response.data.mobile_no);
-                                $('#edit_email').val(response.data.email);
-                                $('#edit_birth_date').val(response.data.birth_date);
-                                $('#edit_city_id').val(response.data.city_id);
+                                $('#edit_state_id').val(response.data.state_id);
                             }else{
                                 toastr.error('something went wrong', { timeOut: 250 });
                             }
@@ -375,7 +297,7 @@
                     }
 
                     $.ajax({
-                        url : "{{ route('admin.users.change.status') }}",
+                        url : "{{ route('admin.cities.change.status') }}",
                         type :'POST',
                         data : {
                             id: id,

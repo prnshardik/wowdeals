@@ -42,6 +42,14 @@ Route::group(['middleware' => ['prevent-back-history']], function(){
                 Route::patch('states/update', 'StatesController@update')->name('states.update');
                 Route::post('states/change-status', 'StatesController@change_status')->name('states.change.status');
             /** states */
+
+            /** cities */
+                Route::any('cities', 'CitiesController@index')->name('cities');
+                Route::post('cities/store', 'CitiesController@store')->name('cities.store');
+                Route::post('cities/edit', 'CitiesController@edit')->name('cities.edit');
+                Route::patch('cities/update', 'CitiesController@update')->name('cities.update');
+                Route::post('cities/change-status', 'CitiesController@change_status')->name('cities.change.status');
+            /** cities */
         });
     });
 

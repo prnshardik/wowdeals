@@ -78,7 +78,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="city_manage.php">
+                    <a href="{{ route('admin.cities') }}">
                         <i class="icon-devices_other"></i>
                         <span class="menu-text">City Management</span>
                     </a>

@@ -16,7 +16,7 @@
                     'mobile_no' => 'required|unique:users,mobile_no,'.$this->id,
                     'email' => 'required|unique:users,email,'.$this->id,
                     'birth_date' => 'required',
-                    'city_id' => 'required',
+                    'city_id' => 'required'
                 ];
             }else{
                 return [
@@ -24,7 +24,7 @@
                     'mobile_no' => 'required|unique:users',
                     'email' => 'required|unique:users',
                     'birth_date' => 'required',
-                    'city_id' => 'required',
+                    'city_id' => 'required'
                 ];
             }
         }
@@ -37,7 +37,7 @@
                 'email.required' => 'Please enter email id',
                 'email.unique' => 'This email is already taken',
                 'birth_date.required' => 'Please enter birth date',
-                'city_id.required' => 'Please select city',
+                'city_id.required' => 'Please select city'
             ];
         }
     }
