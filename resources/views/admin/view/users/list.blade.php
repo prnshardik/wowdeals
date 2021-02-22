@@ -28,8 +28,8 @@
         <ul class="app-actions">
             <li>
                 <div class="custom-search">
-                    <input type="text" class="search-query" placeholder="Enter Name or Mobile">
-                    <i class="icon-search1"></i>
+                    <input type="text" name="search" class="search-query" placeholder="Enter Name or Mobile">
+                    <i class="icon-search1" id="searchButton"></i>
                 </div>
             </li>
             <li>
