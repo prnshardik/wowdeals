@@ -5,50 +5,37 @@
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
     use App\Models\Admin;
-    use App\Models\User;
-    use App\Models\City;
-    use App\Http\Requests\UserRequest;
+    use App\Models\State;
+    use App\Http\Requests\StateRequest;
     use DB, Auth, Hash;
     use Illuminate\Support\Facades\View;
 
-    class UsersController extends Controller{
+    class StatesController extends Controller{
         public function index(Request $request){
             if($request->ajax()){
-                $collection = DB::table('users')
-                                ->select('users.*', 'cities.name as city_name');
+                $collection = DB::table('states')
+                                ->select('states.*');
                 
                 if($request->search != ''){
-                    $collection->where('users.name', 'like', "%$request->search%")
-                                ->orWhere('users.email', 'like', "%$request->search%")
-                                ->orWhere('users.mobile_no', 'like', "%$request->search%")
-                                ->orWhere('users.birth_date', 'like', "%$request->search%")
-                                ->orWhere('cities.name', 'like', "%$request->search%");
+                    $collection->where('states.name', 'like', "%$request->search%");
                 }
 
-                $data = $collection->leftJoin('cities', 'cities.id', 'users.city_id')
-                                    ->paginate(5);
+                $data = $collection->paginate(5);
 
-                $view = View::make('admin.view.users.list_ajax', ['data' => $data])->render();
-                $pagination = View::make('admin.view.users.list_ajax_pagination', ['data' => $data])->render();
+                $view = View::make('admin.view.states.list_ajax', ['data' => $data])->render();
+                $pagination = View::make('admin.view.states.list_ajax_pagination', ['data' => $data])->render();
 
                 return response()->json(['view' => $view, 'pagination' => $pagination]);
             }
 
-            $cities = City::where(['status' => 'active'])->get();
-
-            return view('admin.view.users.list')->with(['cities' => $cities]);
+            return view('admin.view.states.list');
         }
 
-        public function store(UserRequest $request){
+        public function store(StateRequest $request){
             if(!$request->ajax()){ return 'No Direct script alloweded.'; }
 
             $crud = [
                 'name' => ucfirst($request->name),
-                'email' => $request->email,
-                'password'=> Hash::make('abcd1234'),
-                'mobile_no' => $request->mobile_no,
-                'birth_date' => $request->birth_date,
-                'city_id' => $request->city_id,
                 'status' => 'active',
                 'created_at' => date('Y-m-d H:i:s'),
                 'created_by' => auth()->guard('admin')->user()->id,
@@ -56,7 +43,7 @@
                 'updated_by' => auth()->guard('admin')->user()->id
             ];
 
-            $data = User::create($crud);
+            $data = State::create($crud);
 
             if($data)
                 return response()->json(['code' => 200]);
@@ -66,31 +53,24 @@
 
         public function edit(Request $request){
             $id = base64_decode($request->id);
-            $data = DB::table('users')
-                        ->select('users.*', 'cities.name as city_name')
-                        ->leftJoin('cities', 'users.city_id', 'cities.id')
-                        ->where(['users.id' => $id])
-                        ->first();
+            $data = State::find($id);
+
             if($data)
                 return response()->json(['code' => 200, 'data' => $data]);
             else
                 return response()->json(['code' => 201]);
         }
 
-        public function update(UserRequest $request){
+        public function update(StateRequest $request){
             if(!$request->ajax()){ return 'No Direct script alloweded.'; }
 
             $crud = [
                 'name' => ucfirst($request->name),
-                'email' => $request->email,
-                'mobile_no' => $request->mobile_no,
-                'birth_date' => $request->birth_date,
-                'city_id' => $request->city_id,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => auth()->guard('admin')->user()->id
             ];
 
-            $update = User::where(['id' => $request->id])->update($crud);
+            $update = State::where(['id' => $request->id])->update($crud);
 
             if($update)
                 return response()->json(['code' => 200]);
@@ -107,7 +87,7 @@
                 'updated_by' => auth()->guard('admin')->user()->id
             ];
 
-            $update = User::where(['id' => $id])->update($crud);
+            $update = State::where(['id' => $id])->update($crud);
 
             if($update)
                 return response()->json(['code' => 200]);

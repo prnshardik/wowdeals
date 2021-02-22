@@ -28,11 +28,20 @@ Route::group(['middleware' => ['prevent-back-history']], function(){
             Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
             /** users */
-            Route::any('users', 'UsersController@index')->name('users');
-            Route::post('users/store', 'UsersController@store')->name('users.store');
-            Route::post('users/edit', 'UsersController@edit')->name('users.edit');
-            Route::patch('users/update', 'UsersController@update')->name('users.update');
-            Route::post('users/change-status', 'UsersController@change_status')->name('users.change.status');
+                Route::any('users', 'UsersController@index')->name('users');
+                Route::post('users/store', 'UsersController@store')->name('users.store');
+                Route::post('users/edit', 'UsersController@edit')->name('users.edit');
+                Route::patch('users/update', 'UsersController@update')->name('users.update');
+                Route::post('users/change-status', 'UsersController@change_status')->name('users.change.status');
+            /** users */
+
+            /** states */
+                Route::any('states', 'StatesController@index')->name('states');
+                Route::post('states/store', 'StatesController@store')->name('states.store');
+                Route::post('states/edit', 'StatesController@edit')->name('states.edit');
+                Route::patch('states/update', 'StatesController@update')->name('states.update');
+                Route::post('states/change-status', 'StatesController@change_status')->name('states.change.status');
+            /** states */
         });
     });
 

@@ -72,7 +72,7 @@
                     </div>
                 </li>
                 <li>
-                    <a href="state_manage.php">
+                    <a href="{{ route('admin.states') }}">
                         <i class="icon-devices_other"></i>
                         <span class="menu-text">State Management</span>
                     </a>
