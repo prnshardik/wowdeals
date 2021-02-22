@@ -9,21 +9,29 @@
     use App\Models\City;
     use App\Http\Requests\UserRequest;
     use DB, Auth, Hash;
+    use Illuminate\Support\Facades\View;
 
     class UsersController extends Controller{
         public function index(Request $request){
-            $users = DB::table('users')
-                        ->select('users.*', 'cities.name as city_name')
-                        ->leftJoin('cities', 'cities.id', 'users.city_id')
-                        ->get();
+            if($request->ajax()){
+                $users = DB::table('users')
+                                ->select('users.*', 'cities.name as city_name')
+                                ->leftJoin('cities', 'cities.id', 'users.city_id')
+                                ->paginate(3);
+
+                $view = View::make('admin.view.users.list_ajax', ['users' => $users])->render();
+                $pagination = View::make('admin.view.users.list_ajax_pagination', ['users' => $users])->render();
+
+                return response()->json(['view' => $view, 'pagination' => $pagination]);
+            }
 
             $cities = City::where(['status' => 'active'])->get();
 
-            return view('admin.view.users.list')->with(['cities' => $cities, 'users' => $users]);
+            return view('admin.view.users.list')->with(['cities' => $cities]);
         }
 
         public function store(UserRequest $request){
-            if($request->ajax()){ return true; }
+            if(!$request->ajax()){ return 'No Direct script alloweded.'; }
 
             $crud = [
                 'name' => ucfirst($request->name),
@@ -42,9 +50,9 @@
             $user = User::create($crud);
 
             if($user)
-                return redirect()->route('admin.users')->with('success', 'Record inserted successfully');
+                return response()->json(['code' => 200]);
             else
-                return redirect()->back()->with('error', 'Failed to insert record')->withInput();
+                return response()->json(['code' => 201]);
         }
 
         public function edit(Request $request){
@@ -61,7 +69,7 @@
         }
 
         public function update(UserRequest $request){
-            if($request->ajax()){ return false; }
+            if(!$request->ajax()){ return 'No Direct script alloweded.'; }
 
             $crud = [
                 'name' => ucfirst($request->name),
@@ -76,8 +84,8 @@
             $update = User::where(['id' => $request->id])->update($crud);
 
             if($update)
-                return redirect()->route('admin.users')->with('success', 'Record updated successfully');
+                return response()->json(['code' => 200]);
             else
-                return redirect()->back()->with('error', 'Failed to update record')->withInput();
+                return response()->json(['code' => 201]);
         }
     }

@@ -55,40 +55,18 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @if(isset($users) && $users->isNotEmpty())
-                                @foreach($users AS $row)
-                                    <tr>
-                                        <td>{{ $row->name ?? '' }}</td>
-                                        <td>{{ $row->mobile_no ?? '' }}</td>
-                                        <td>{{ $row->email ?? '' }}</td>
-                                        <td>{{ $row->birth_date ?? '' }}</td>
-                                        <td>{{ $row->city_name ?? '' }}</td>
-                                        <td>
-                                            <div class="td-actions">
-                                                <a href="#" data-id="{{ base64_encode($row->id) ?? '' }}" class="icon red edit" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                    <i class="icon-edit"></i>
-                                                </a>
-                                                <a href="#" class="icon red" data-toggle="tooltip" data-placement="top" title="De-Activate">
-                                                    <i class="icon-sync_problem"></i>
-                                                </a>
-                                                <a href="#" class="icon red delete" data-toggle="tooltip" data-placement="top" title="Change Password">
-                                                    <i class="icon-vpn_key"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                     </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="7"><h5 class="text-center">No Data Found...!!!</h5></td>
-                                </tr>
-                            @endif
+                        <tbody id="datatable">
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="card-body">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end primary" id="paginate"></ul>
+        </nav>
     </div>
 
     <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
@@ -221,7 +199,37 @@
 
 @section('scripts')
     <script>
+        var search = '';
+        var page = '';
+
         $(document).ready(function(){
+            function records(page){
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.users') }}"+"?page="+page,
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        search: search
+                    },
+                    success: function (response) {
+                        $('#datatable').html(response.view);
+                        $('#paginate').html(response.pagination);
+                    },
+                    error:function(error){
+                        $('#datatable').html('<tr><td colspan="7"><h5 class="text-center">No Data Found...!!!</h5></td></tr>');
+                        $('#paginate').html('');
+                    }
+                });
+            }
+
+            records(page);
+
+            $('#paginate').on('click', '.pagination a', function(e) {
+                e.preventDefault();
+                page = $(this).attr('href').split('page=')[1];
+                records(page);
+            });
+
             $("#mobile_no").keypress(function(e){
                 var keyCode = e.keyCode || e.which;
                 var $this = $(this);
@@ -252,6 +260,7 @@
             var insert_form = $('#insert_form');
             $('.kt-form__help').html('');
             insert_form.submit(function(e) {
+                e.preventDefault();
                 $('.help-block').html('');
                 $('.m-form__help').html('');
                 $.ajax({
@@ -261,11 +270,18 @@
                     dataType: 'json',
                     async: false,
                     success : function(response){
-                        return true;
+                        $('#insertModal').modal('hide');
+                        if(response.code == 200){
+                            $("#insert_form").trigger('reset');
+                            toastr.success('Record inserted successfully', { timeOut: 250 });
+                            records();
+                        }else{
+                            toastr.error('something went wrong', { timeOut: 250 });
+                            records();
+                        }
                     },
                     error: function(error){
                         if(error.status === 422) {
-                            e.preventDefault();
                             var errors_ = error.responseJSON;
                             $('.kt-form__help').html('');
                             $.each(errors_.errors, function (key, value) {
@@ -276,7 +292,7 @@
                 });
             });
 
-            $('.edit').on('click' , function(){
+            $('#datatable').on('click', '.edit', function(){
                 var id = $(this).data('id');
 
                 if(id != '' || id != null){
@@ -317,6 +333,7 @@
             var update_form = $('#update_form');
             $('.kt-form__help').html('');
             update_form.submit(function(e) {
+                e.preventDefault();
                 $('.help-block').html('');
                 $('.m-form__help').html('');
                 $.ajax({
@@ -326,11 +343,17 @@
                     dataType: 'json',
                     async: false,
                     success : function(response){
-                        return true;
+                        $('#updateModal').modal('hide');
+                        if(response.code == 200){
+                            toastr.success('Record updated successfully', { timeOut: 250 });
+                            records();
+                        }else{
+                            toastr.error('something went wrong', { timeOut: 250 });
+                            records();
+                        }
                     },
                     error: function(error){
                         if(error.status === 422) {
-                            e.preventDefault();
                             var errors_ = error.responseJSON;
                             $('.kt-form__help').html('');
                             $.each(errors_.errors, function (key, value) {
