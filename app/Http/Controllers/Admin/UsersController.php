@@ -17,7 +17,7 @@
                 $users = DB::table('users')
                                 ->select('users.*', 'cities.name as city_name')
                                 ->leftJoin('cities', 'cities.id', 'users.city_id')
-                                ->paginate(3);
+                                ->paginate(5);
 
                 $view = View::make('admin.view.users.list_ajax', ['users' => $users])->render();
                 $pagination = View::make('admin.view.users.list_ajax_pagination', ['users' => $users])->render();
