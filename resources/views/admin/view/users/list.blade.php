@@ -28,7 +28,7 @@
         <ul class="app-actions">
             <li>
                 <div class="custom-search">
-                    <input type="text" name="search" class="search-query" placeholder="Enter Name or Mobile">
+                    <input type="text" name="search" id="search" class="search-query" placeholder="Enter Name or Mobile">
                     <i class="icon-search1" id="searchButton"></i>
                 </div>
             </li>
@@ -394,6 +394,11 @@
                 }else{
                     toastr.error('something went wrong', { timeOut: 250 });
                 }                
+            });
+
+            $('#searchButton').click(function(){
+                search = $('#search').val();
+                records(page);
             });
         });
     </script>

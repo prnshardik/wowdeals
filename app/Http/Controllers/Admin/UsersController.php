@@ -14,10 +14,19 @@
     class UsersController extends Controller{
         public function index(Request $request){
             if($request->ajax()){
-                $users = DB::table('users')
-                                ->select('users.*', 'cities.name as city_name')
-                                ->leftJoin('cities', 'cities.id', 'users.city_id')
-                                ->paginate(5);
+                $collection = DB::table('users')
+                                ->select('users.*', 'cities.name as city_name');
+                
+                if($request->search != ''){
+                    $collection->where('users.name', 'like', "%$request->search%")
+                                ->orWhere('users.email', 'like', "%$request->search%")
+                                ->orWhere('users.mobile_no', 'like', "%$request->search%")
+                                ->orWhere('users.birth_date', 'like', "%$request->search%")
+                                ->orWhere('cities.name', 'like', "%$request->search%");
+                }
+
+                $users = $collection->leftJoin('cities', 'cities.id', 'users.city_id')
+                                    ->paginate(5);
 
                 $view = View::make('admin.view.users.list_ajax', ['users' => $users])->render();
                 $pagination = View::make('admin.view.users.list_ajax_pagination', ['users' => $users])->render();
